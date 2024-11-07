@@ -5,207 +5,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Seorang Abi</title>
 
-    <style>
-      html,
-      body,
-      div,
-      span,
-      applet,
-      object,
-      iframe,
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6,
-      p,
-      blockquote,
-      pre,
-      a,
-      abbr,
-      acronym,
-      address,
-      big,
-      cite,
-      code,
-      del,
-      dfn,
-      em,
-      img,
-      ins,
-      kbd,
-      q,
-      s,
-      samp,
-      small,
-      strike,
-      strong,
-      sub,
-      sup,
-      tt,
-      var,
-      b,
-      u,
-      i,
-      center,
-      dl,
-      dt,
-      dd,
-      ol,
-      ul,
-      li,
-      fieldset,
-      form,
-      label,
-      legend,
-      table,
-      caption,
-      tbody,
-      tfoot,
-      thead,
-      tr,
-      th,
-      td,
-      article,
-      aside,
-      canvas,
-      details,
-      embed,
-      figure,
-      figcaption,
-      footer,
-      header,
-      hgroup,
-      menu,
-      nav,
-      output,
-      ruby,
-      section,
-      summary,
-      time,
-      mark,
-      audio,
-      video {
-        margin: 0;
-        padding: 0;
-        border: 0;
-        font-size: 100%;
-        font: inherit;
-        vertical-align: baseline;
-      }
-      /* HTML5 display-role reset for older browsers */
-      article,
-      aside,
-      details,
-      figcaption,
-      figure,
-      footer,
-      header,
-      hgroup,
-      menu,
-      nav,
-      section {
-        display: block;
-      }
-      body {
-        line-height: 1;
-      }
-      ol,
-      ul {
-        list-style: none;
-      }
-      blockquote,
-      q {
-        quotes: none;
-      }
-      blockquote:before,
-      blockquote:after,
-      q:before,
-      q:after {
-        content: "";
-        content: none;
-      }
-      table {
-        border-collapse: collapse;
-        border-spacing: 0;
-      }
-    </style>
+    <link rel="icon" type="image/x-icon" href="./images/favicon.png" />
+
+    <link rel="stylesheet" href="./css/reset.css" />
 
     <style>
-      img {
+      .portfolio-img {
         width: 100%;
         height: auto;
-        min-height: 100vh;
+        min-height: 500px;
+      }
+
+      .punch {
+        position: fixed;
+        bottom: -5px;
+        right: 0;
+        z-index: 99;
+        opacity: 1;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+      }
+
+      .punch img {
+        height: auto;
+        width: 300px;
+      }
+
+      @media (max-width: 575.98px) {
+        .punch img {
+          width: 200px;
+        }
+      }
+
+      @media (max-width: 767.98px) {
+        .punch img {
+          width: 200px;
+        }
       }
     </style>
 
+    <script src="./js/lazy-image.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        var lazyloadImages;
+        const floatingElement = document.querySelector(".punch");
+        let scrollTimeout;
 
-        if ("IntersectionObserver" in window) {
-          lazyloadImages = document.querySelectorAll(".lazy");
-          var imageObserver = new IntersectionObserver(function (
-            entries,
-            observer
-          ) {
-            entries.forEach(function (entry) {
-              if (entry.isIntersecting) {
-                var image = entry.target;
-                image.src = image.dataset.src;
-                image.classList.remove("lazy");
-                imageObserver.unobserve(image);
-              }
-            });
-          });
+        window.addEventListener("scroll", () => {
+          // Sembunyikan elemen saat scrolling
+          floatingElement.style.transform = "translateY(100px)";
+          floatingElement.style.opacity = "0";
 
-          lazyloadImages.forEach(function (image) {
-            imageObserver.observe(image);
-          });
-        } else {
-          var lazyloadThrottleTimeout;
-          lazyloadImages = document.querySelectorAll(".lazy");
+          // Reset timeout setiap kali scroll
+          clearTimeout(scrollTimeout);
 
-          function lazyload() {
-            if (lazyloadThrottleTimeout) {
-              clearTimeout(lazyloadThrottleTimeout);
-            }
-
-            lazyloadThrottleTimeout = setTimeout(function () {
-              var scrollTop = window.pageYOffset;
-              lazyloadImages.forEach(function (img) {
-                if (img.offsetTop < window.innerHeight + scrollTop) {
-                  img.src = img.dataset.src;
-                  img.classList.remove("lazy");
-                }
-              });
-              if (lazyloadImages.length == 0) {
-                document.removeEventListener("scroll", lazyload);
-                window.removeEventListener("resize", lazyload);
-                window.removeEventListener("orientationChange", lazyload);
-              }
-            }, 20);
-          }
-
-          document.addEventListener("scroll", lazyload);
-          window.addEventListener("resize", lazyload);
-          window.addEventListener("orientationChange", lazyload);
-        }
+          // Tampilkan kembali elemen setelah user berhenti scrolling
+          scrollTimeout = setTimeout(() => {
+            floatingElement.style.transform = "translateY(0)";
+            floatingElement.style.opacity = "1";
+          }, 200); // Mengatur jeda sebelum elemen muncul kembali
+        });
       });
     </script>
   </head>
   <body>
-    <img data-src="./images/artboard-001.webp" class="lazy" loading="lazy" />
-    <img data-src="./images/artboard-002.webp" class="lazy" loading="lazy" />
-    <img data-src="./images/artboard-003.webp" class="lazy" loading="lazy" />
-    <img data-src="./images/artboard-008.webp" class="lazy" loading="lazy" />
-    <img data-src="./images/artboard-006.webp" class="lazy" loading="lazy" />
-    <img data-src="./images/artboard-010.webp" class="lazy" loading="lazy" />
-    <img data-src="./images/artboard-007.webp" class="lazy" loading="lazy" />
-    <img data-src="./images/artboard-009.webp" class="lazy" loading="lazy" />
-    <img data-src="./images/artboard-011.webp" class="lazy" loading="lazy" />
-    <img data-src="./images/artboard-005.webp" class="lazy" loading="lazy" />
-    <img data-src="./images/artboard-004.webp" class="lazy" loading="lazy" />
+    <a href="https://t.me/seorangabi" class="punch">
+      <img src="./images/punch.png" />
+    </a>
+    <img
+      data-src="./images/artboard-001.webp"
+      class="lazy portfolio-img"
+      loading="lazy"
+    />
+    <img
+      data-src="./images/artboard-002.webp"
+      class="lazy portfolio-img"
+      loading="lazy"
+    />
+    <img
+      data-src="./images/artboard-003.webp"
+      class="lazy portfolio-img"
+      loading="lazy"
+    />
+    <img
+      data-src="./images/artboard-008.webp"
+      class="lazy portfolio-img"
+      loading="lazy"
+    />
+    <img
+      data-src="./images/artboard-006.webp"
+      class="lazy portfolio-img"
+      loading="lazy"
+    />
+    <img
+      data-src="./images/artboard-010.webp"
+      class="lazy portfolio-img"
+      loading="lazy"
+    />
+    <img
+      data-src="./images/artboard-007.webp"
+      class="lazy portfolio-img"
+      loading="lazy"
+    />
+    <img
+      data-src="./images/artboard-009.webp"
+      class="lazy portfolio-img"
+      loading="lazy"
+    />
+    <img
+      data-src="./images/artboard-011.webp"
+      class="lazy portfolio-img"
+      loading="lazy"
+    />
+    <img
+      data-src="./images/artboard-005.webp"
+      class="lazy portfolio-img"
+      loading="lazy"
+    />
+    <img
+      data-src="./images/artboard-004.webp"
+      class="lazy portfolio-img"
+      loading="lazy"
+    />
   </body>
 </html>

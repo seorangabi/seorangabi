@@ -6,11 +6,6 @@
     <title>Seorang Abi</title>
 
     <style>
-      /* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-
       html,
       body,
       div,
@@ -141,20 +136,76 @@
       img {
         width: 100%;
         height: auto;
+        min-height: 100vh;
       }
     </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var lazyloadImages;
+
+        if ("IntersectionObserver" in window) {
+          lazyloadImages = document.querySelectorAll(".lazy");
+          var imageObserver = new IntersectionObserver(function (
+            entries,
+            observer
+          ) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                var image = entry.target;
+                image.src = image.dataset.src;
+                image.classList.remove("lazy");
+                imageObserver.unobserve(image);
+              }
+            });
+          });
+
+          lazyloadImages.forEach(function (image) {
+            imageObserver.observe(image);
+          });
+        } else {
+          var lazyloadThrottleTimeout;
+          lazyloadImages = document.querySelectorAll(".lazy");
+
+          function lazyload() {
+            if (lazyloadThrottleTimeout) {
+              clearTimeout(lazyloadThrottleTimeout);
+            }
+
+            lazyloadThrottleTimeout = setTimeout(function () {
+              var scrollTop = window.pageYOffset;
+              lazyloadImages.forEach(function (img) {
+                if (img.offsetTop < window.innerHeight + scrollTop) {
+                  img.src = img.dataset.src;
+                  img.classList.remove("lazy");
+                }
+              });
+              if (lazyloadImages.length == 0) {
+                document.removeEventListener("scroll", lazyload);
+                window.removeEventListener("resize", lazyload);
+                window.removeEventListener("orientationChange", lazyload);
+              }
+            }, 20);
+          }
+
+          document.addEventListener("scroll", lazyload);
+          window.addEventListener("resize", lazyload);
+          window.addEventListener("orientationChange", lazyload);
+        }
+      });
+    </script>
   </head>
   <body>
-    <img src="./images/artboard-001.webp" loading="lazy" />
-    <img src="./images/artboard-002.webp" loading="lazy" />
-    <img src="./images/artboard-003.webp" loading="lazy" />
-    <img src="./images/artboard-004.webp" loading="lazy" />
-    <img src="./images/artboard-005.webp" loading="lazy" />
-    <img src="./images/artboard-006.webp" loading="lazy" />
-    <img src="./images/artboard-007.webp" loading="lazy" />
-    <img src="./images/artboard-008.webp" loading="lazy" />
-    <img src="./images/artboard-009.webp" loading="lazy" />
-    <img src="./images/artboard-010.webp" loading="lazy" />
-    <img src="./images/artboard-011.webp" loading="lazy" />
+    <img data-src="./images/artboard-001.webp" class="lazy" loading="lazy" />
+    <img data-src="./images/artboard-002.webp" class="lazy" loading="lazy" />
+    <img data-src="./images/artboard-003.webp" class="lazy" loading="lazy" />
+    <img data-src="./images/artboard-004.webp" class="lazy" loading="lazy" />
+    <img data-src="./images/artboard-005.webp" class="lazy" loading="lazy" />
+    <img data-src="./images/artboard-006.webp" class="lazy" loading="lazy" />
+    <img data-src="./images/artboard-007.webp" class="lazy" loading="lazy" />
+    <img data-src="./images/artboard-008.webp" class="lazy" loading="lazy" />
+    <img data-src="./images/artboard-009.webp" class="lazy" loading="lazy" />
+    <img data-src="./images/artboard-010.webp" class="lazy" loading="lazy" />
+    <img data-src="./images/artboard-011.webp" class="lazy" loading="lazy" />
   </body>
 </html>

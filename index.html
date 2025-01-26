@@ -69,24 +69,77 @@
         let scrollTimeout;
 
         window.addEventListener("scroll", () => {
-          // Sembunyikan elemen saat scrolling
           floatingElement.style.transform = "translateY(100px)";
           floatingElement.style.opacity = "0";
 
-          // Reset timeout setiap kali scroll
           clearTimeout(scrollTimeout);
 
-          // Tampilkan kembali elemen setelah user berhenti scrolling
           scrollTimeout = setTimeout(() => {
             floatingElement.style.transform = "translateY(0)";
             floatingElement.style.opacity = "1";
-          }, 200); // Mengatur jeda sebelum elemen muncul kembali
+          }, 200);
         });
       });
     </script>
+
+    <!-- Visitor -->
+    <script>
+      const visitor = async () => {
+        try {
+          const res = await fetch(
+            "https://api.seorangabi.com/v1/statistic/visitor",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const visited = sessionStorage.getItem("visited");
+        if (visited === "true") return;
+
+        visitor();
+
+        sessionStorage.setItem("visited", "true");
+      });
+    </script>
+
+    <script>
+      const punchMyHead = async () => {
+        try {
+          const punchMyHead = sessionStorage.getItem("punchMyHead");
+          if (punchMyHead === "true") return;
+
+          const res = await fetch(
+            "https://api.seorangabi.com/v1/statistic/punch-my-head",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          sessionStorage.setItem("punchMyHead", "true");
+        } catch (error) {
+          console.error(error);
+        }
+      };
+    </script>
   </head>
   <body>
-    <a href="https://t.me/seorangabi" class="punch">
+    <a
+      href="https://t.me/seorangabi"
+      class="punch"
+      onclick="punchMyHead()"
+      target="_blank"
+    >
       <img src="./images/punch.png" />
     </a>
     <img
